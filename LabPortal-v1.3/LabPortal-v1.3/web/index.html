@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LabPortal | Demo</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#172037;background:#f4f5fa}
+*{box-sizing:border-box}body{min-height:100vh;display:grid;place-items:center;margin:0;padding:22px}
+main{max-width:440px;width:100%;padding:34px;background:#fff;border:1px solid #e7eaf2;border-radius:22px;box-shadow:0 14px 45px #18233d12}
+.tag{display:inline-block;background:#eef2ff;color:#4338ca;padding:7px 10px;font-weight:700;border-radius:50px;font-size:12px}h1{margin:20px 0 8px;font-size:27px}p{color:#566179;line-height:1.6}
+label{font-size:13px;font-weight:650;display:block;margin:20px 0 8px}input{width:100%;padding:14px;border:1px solid #cbd2e1;border-radius:12px;font:inherit}button{margin-top:13px;width:100%;background:#4338ca;color:white;border:0;padding:14px;border-radius:12px;font-weight:700;font:inherit;cursor:pointer}button:disabled{opacity:.6}#result{font-weight:650;min-height:22px}small{color:#69768d}
+</style>
+</head><body>
+<main>
+<div class="tag">LOCAL LEARNING DEMO</div>
+<h1>Lab Portal</h1>
+<p>Enter a test code to verify data travels from your browser to the Kali server and is saved in a local file.</p>
+<form id="form"><label for="code">Demo code (not a password)</label><input id="code" name="demo_code" type="text" maxlength="9" pattern="TEST-[0-9]{4}" value="TEST-1234" required autocomplete="off"><button type="submit">Send demo code</button></form>
+<p id="result" aria-live="polite"></p>
+<small>Use only TEST-0000 to TEST-9999. Never enter a password, OTP, or personal information.</small>
+</main>
+<script>
+const form=document.getElementById('form'),result=document.getElementById('result');
+form.addEventListener('submit',async e=>{e.preventDefault();result.textContent='Sending...';try{const resp=await fetch('/demo',{method:'POST',body:new URLSearchParams(new FormData(form))});const data=await resp.json();result.textContent=data.message+(data.ok?' ('+data.code+')':'');}catch{result.textContent='Connection failed. Check the server terminal.'}});
+</script>
+</body></html>
